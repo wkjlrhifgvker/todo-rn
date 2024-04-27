@@ -1,22 +1,34 @@
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
-import Task  from "./compnents/task.js"
+import Task  from "./components/task.js"
 
 export default function App() {
-  const handleTask = () => { }
+  const [task, setTask] = useState('');
+  const [taskItems, setTaskItems] = useState([]);
+  const handleTask = () => { 
+    setTaskItems([...taskItems, task]);
+    setTask('');
+
+   }
   return (
     <View style={styles.container}>
       <View style={styles.taskWrapper}></View>
       <Text style={styles.title}>Tytul taska</Text>
       <View style={styles.items}>
-        <Task text="task 1"></Task>
-        <Task text="task 2"></Task>
-        <Task text="task 3"></Task>
+      {
+        taskItems.map((item, index) => {
+          return(
+            <TouchableOpacity key={index}>
+              <Task text={item}/>
+            </TouchableOpacity>
+          )
+        })
+      }
       </View>
       
       <KeyboardAvoidingView style={styles.writeTaskWapper}>
-
-                <TextInput style={styles.input} placeholder={'write a task...'}/>
+                <TextInput style={styles.input} placeholder={'write a task...'} value={task} onChangeText={(text) => setTask(text)}/>
                 <TouchableOpacity onPress={() => handleTask()}>
                     <View style={styles.addWrapper}>
                         <Text style={styles.addText}>+</Text>
